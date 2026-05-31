@@ -1,0 +1,71 @@
+('C:\\Users\\JB\\Pictures\\Eigene '
+ 'Projekte\\DuplicateImageFinder\\build\\PicClean\\PicClean.pkg',
+ {'BINARY': True,
+  'DATA': True,
+  'EXECUTABLE': True,
+  'EXTENSION': True,
+  'PYMODULE': True,
+  'PYSOURCE': True,
+  'PYZ': False,
+  'SPLASH': True,
+  'SYMLINK': False},
+ [('pyi-contents-directory _internal', '', 'OPTION'),
+  ('PYZ-00.pyz',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\build\\PicClean\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\struct.pyc',
+   'PYMODULE'),
+  ('pyimod01_archive',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\pyimod01_archive.pyc',
+   'PYMODULE'),
+  ('pyimod02_importers',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\pyimod02_importers.pyc',
+   'PYMODULE'),
+  ('pyimod03_ctypes',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\pyimod03_ctypes.pyc',
+   'PYMODULE'),
+  ('pyimod04_pywin32',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\pyimod04_pywin32.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('pyi_rth_inspect',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
+   'PYSOURCE'),
+  ('pyi_rth_pkgutil',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgutil.py',
+   'PYSOURCE'),
+  ('pyi_rth_multiprocessing',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
+   'PYSOURCE'),
+  ('pyi_rth__tkinter',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth__tkinter.py',
+   'PYSOURCE'),
+  ('pyi_rth_setuptools',
+   'C:\\Users\\JB\\Pictures\\Eigene '
+   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_setuptools.py',
+   'PYSOURCE'),
+  ('main',
+   'C:\\Users\\JB\\Pictures\\Eigene Projekte\\DuplicateImageFinder\\main.py',
+   'PYSOURCE')],
+ 'python314.dll',
+ True,
+ False,
+ False,
+ [],
+ None,
+ None,
+ None)
