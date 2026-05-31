@@ -14,11 +14,11 @@ import gc
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-# --- KONFIGURATION ---
+# --- CONFIGURATION ---
 UNSCHAERFE_SCHWELLENWERT = 100.0
 HAMMING_DISTANZ_LIMIT = 8
 
-# --- FARBPALETTEN (Light & Dark Mode) ---
+# --- COLOR PALETTES (Light & Dark Mode) ---
 PURPLE = "#8B5CF6"
 DANGER = "#FF5555"
 
@@ -39,7 +39,7 @@ THEME = {
     }
 }
 
-# --- ÜBERSETZUNGEN ---
+# --- TRANSLATIONS ---
 TEXTS = {
     "DE": {
         "sub": "IMAGE ANALYZER",
@@ -182,14 +182,14 @@ TEXTS = {
 }
 
 def main(page: ft.Page):
-    # --- FENSTER SETUP ---
+# --- WINDOW SETUP ---
     page.title = "PicClean"
     page.padding = 30
     page.vertical_alignment = "center"
     page.theme_mode = "dark"
 
     try:
-        page.window.icon = "icon.ico" # <-- HIER: .ico statt .png!
+        page.window.icon = "icon.ico"
         page.window.width = 1200
         page.window.height = 800
         page.window.min_width = 900
@@ -207,7 +207,7 @@ def main(page: ft.Page):
         "is_working": False
     }
 
-    # --- UI ELEMENTE DEKLARIEREN ---
+    # --- DECLARE UI ELEMENTS ---
     txt_badge = ft.Text("", size=10, weight="bold", text_align="center")
     txt_title = ft.Text("P I C C L E A N", size=32, weight="w900", italic=True, text_align="center")
     txt_desc = ft.Text("", size=14, text_align="center")
@@ -231,7 +231,7 @@ def main(page: ft.Page):
     list_unscharf = ft.ListView(expand=True, spacing=10)
     list_duplikate = ft.ListView(expand=True, spacing=10)
 
-    # --- THEME & SPRACHE UPDATER ---
+    # --- Theme & Language Updater ---
     def apply_theme():
         t = THEME["dark"] if state["is_dark"] else THEME["light"]
 
@@ -325,7 +325,7 @@ def main(page: ft.Page):
 
     top_bar = ft.Row([theme_btn, ft.Container(expand=True), lang_row], alignment="spaceBetween")
 
-    # --- VORSCHAU ---
+    # --- PREVIEW ---
     def zeige_vorschau(pfad):
         state["vorschau_pfad"] = pfad
         preview_container.content = ft.Image(src=pfad, fit="contain", border_radius=10, expand=True)
@@ -337,7 +337,7 @@ def main(page: ft.Page):
         preview_container.content = txt_prev_empty
         page.update()
 
-    # --- HAUPT LOGIK ---
+    # --- MAIN LOGIC ---
     def hole_ordner_pfad():
         ordner_pfad = [""]
         def _dialog():
@@ -612,7 +612,7 @@ def main(page: ft.Page):
         on_click=lambda _: page.run_task(raeume_auf, "duplikate", btn_clean_dup, list_duplikate)
     )
 
-    # --- LAYOUT ZUSAMMENBAUEN ---
+    # --- ASSEMBLE LAYOUT ---
     header = ft.Column(
         controls=[badge_container, txt_title, txt_desc],
         horizontal_alignment="center", spacing=5
