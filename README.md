@@ -3,8 +3,6 @@
 **A lightning-fast, modern, and robust Windows desktop application to declutter your image library.**  
 PicClean automatically scans your folders for duplicate images and blurry photos, allowing you to easily sort them out and free up storage space.
 
-![PicClean Screenshot](https://via.placeholder.com/800x450.png?text=Take+a+screenshot+of+your+app+and+put+the+link+here!)
-
 ---
 
 ## ✨ Features
