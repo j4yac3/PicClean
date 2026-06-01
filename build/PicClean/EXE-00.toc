@@ -1,10 +1,9 @@
 ('C:\\Users\\JB\\Pictures\\Eigene '
- 'Projekte\\DuplicateImageFinder\\build\\PicClean\\PicClean.exe',
+ 'Projekte\\PicClean\\build\\PicClean\\PicClean.exe',
  False,
  False,
  True,
- ['C:\\Users\\JB\\Pictures\\Eigene '
-  'Projekte\\DuplicateImageFinder\\assets\\icon.ico'],
+ ['C:\\Users\\JB\\Pictures\\Eigene Projekte\\PicClean\\assets\\icon.ico'],
  None,
  False,
  False,
@@ -32,66 +31,61 @@
  None,
  None,
  'C:\\Users\\JB\\Pictures\\Eigene '
- 'Projekte\\DuplicateImageFinder\\build\\PicClean\\PicClean.pkg',
+ 'Projekte\\PicClean\\build\\PicClean\\PicClean.pkg',
  [('pyi-contents-directory _internal', '', 'OPTION'),
   ('PYZ-00.pyz',
    'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\build\\PicClean\\PYZ-00.pyz',
+   'Projekte\\PicClean\\build\\PicClean\\PYZ-00.pyz',
    'PYZ'),
   ('struct',
    'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\struct.pyc',
+   'Projekte\\PicClean\\build\\PicClean\\localpycs\\struct.pyc',
    'PYMODULE'),
   ('pyimod01_archive',
    'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\pyimod01_archive.pyc',
+   'Projekte\\PicClean\\build\\PicClean\\localpycs\\pyimod01_archive.pyc',
    'PYMODULE'),
   ('pyimod02_importers',
    'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\pyimod02_importers.pyc',
+   'Projekte\\PicClean\\build\\PicClean\\localpycs\\pyimod02_importers.pyc',
    'PYMODULE'),
   ('pyimod03_ctypes',
    'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\pyimod03_ctypes.pyc',
+   'Projekte\\PicClean\\build\\PicClean\\localpycs\\pyimod03_ctypes.pyc',
    'PYMODULE'),
   ('pyimod04_pywin32',
    'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\build\\PicClean\\localpycs\\pyimod04_pywin32.pyc',
+   'Projekte\\PicClean\\build\\PicClean\\localpycs\\pyimod04_pywin32.pyc',
    'PYMODULE'),
   ('pyiboot01_bootstrap',
-   'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
    'PYSOURCE'),
   ('pyi_rth_inspect',
-   'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
+   'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
    'PYSOURCE'),
   ('pyi_rth_pkgutil',
-   'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgutil.py',
+   'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgutil.py',
    'PYSOURCE'),
   ('pyi_rth_multiprocessing',
-   'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
+   'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
    'PYSOURCE'),
   ('pyi_rth__tkinter',
-   'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth__tkinter.py',
+   'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth__tkinter.py',
+   'PYSOURCE'),
+  ('pyi_rth_mplconfig',
+   'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_mplconfig.py',
    'PYSOURCE'),
   ('pyi_rth_setuptools',
-   'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_setuptools.py',
+   'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_setuptools.py',
    'PYSOURCE'),
   ('main',
-   'C:\\Users\\JB\\Pictures\\Eigene Projekte\\DuplicateImageFinder\\main.py',
+   'C:\\Users\\JB\\Pictures\\Eigene Projekte\\PicClean\\main.py',
    'PYSOURCE')],
  [],
  False,
  False,
- 1780236331,
+ 1780307974,
  [('runw.exe',
-   'C:\\Users\\JB\\Pictures\\Eigene '
-   'Projekte\\DuplicateImageFinder\\.venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\runw.exe',
+   'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\runw.exe',
    'EXECUTABLE')],
- 'C:\\Users\\JB\\Pictures\\Eigene '
- 'Projekte\\DuplicateImageFinder\\.venv\\Scripts\\python314.dll')
+ 'C:\\Users\\JB\\AppData\\Local\\Programs\\Python\\Python314\\python314.dll')

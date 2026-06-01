@@ -12,13 +12,14 @@ import asyncio
 import threading
 import gc
 
+# Prevents PIL from crashing on truncated or corrupted images
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-# --- KONFIGURATION ---
+# --- CONFIGURATION ---
 UNSCHAERFE_SCHWELLENWERT = 100.0
 HAMMING_DISTANZ_LIMIT = 8
 
-# --- FARBPALETTEN (Light & Dark Mode) ---
+# --- COLOR PALETTES (Light & Dark Mode) ---
 PURPLE = "#8B5CF6"
 DANGER = "#FF5555"
 
@@ -39,7 +40,7 @@ THEME = {
     }
 }
 
-# --- ÜBERSETZUNGEN ---
+# --- TRANSLATIONS ---
 TEXTS = {
     "DE": {
         "sub": "IMAGE ANALYZER",
@@ -51,7 +52,7 @@ TEXTS = {
         "btn_scan": "ORDNER SCANNEN",
         "btn_blur": "UNSCHARFE VERSCHIEBEN",
         "btn_dup": "DUPLIKATE VERSCHIEBEN",
-        "btn_keep": "BEHALTEN",
+        "btn_keep": "BILD BEHALTEN",
         "working": "ARBEITE...",
         "done": "ERLEDIGT",
         "search": "Suche Bilder...",
@@ -74,7 +75,7 @@ TEXTS = {
         "btn_scan": "SCAN FOLDER",
         "btn_blur": "MOVE BLURRED",
         "btn_dup": "MOVE DUPLICATES",
-        "btn_keep": "KEEP",
+        "btn_keep": "KEEP IMAGE",
         "working": "WORKING...",
         "done": "DONE",
         "search": "Searching images...",
@@ -97,7 +98,7 @@ TEXTS = {
         "btn_scan": "SCANNER DOSSIER",
         "btn_blur": "DÉPLACER FLOUES",
         "btn_dup": "DÉPLACER DOUBLONS",
-        "btn_keep": "GARDER",
+        "btn_keep": "GARDER L'IMAGE",
         "working": "TRAVAIL...",
         "done": "TERMINÉ",
         "search": "Recherche d'images...",
@@ -120,7 +121,7 @@ TEXTS = {
         "btn_scan": "ESCANEAR CARPETA",
         "btn_blur": "MOVER BORROSAS",
         "btn_dup": "MOVER DUPLICADOS",
-        "btn_keep": "MANTENER",
+        "btn_keep": "CONSERVAR IMAGEN",
         "working": "TRABAJANDO...",
         "done": "HECHO",
         "search": "Buscando imágenes...",
@@ -143,7 +144,7 @@ TEXTS = {
         "btn_scan": "SCANSIONA CARTELLA",
         "btn_blur": "SPOSTA SFOCATE",
         "btn_dup": "SPOSTA DUPLICATI",
-        "btn_keep": "MANTIENI",
+        "btn_keep": "MANTIENI IMMAG.",
         "working": "ELABORAZIONE...",
         "done": "FATTO",
         "search": "Ricerca immagini...",
@@ -166,7 +167,7 @@ TEXTS = {
         "btn_scan": "СКАНИРОВАТЬ ПАПКУ",
         "btn_blur": "ПЕРЕМЕСТИТЬ РАЗМЫТЫЕ",
         "btn_dup": "ПЕРЕМЕСТИТЬ ДУБЛИКАТЫ",
-        "btn_keep": "ОСТАВИТЬ",
+        "btn_keep": "ОСТАВИТЬ ФОТО",
         "working": "РАБОТАЮ...",
         "done": "ГОТОВО",
         "search": "Поиск изображений...",
@@ -182,14 +183,15 @@ TEXTS = {
 }
 
 def main(page: ft.Page):
-    # --- FENSTER SETUP ---
-    page.title = "PicClean"
+    # --- WINDOW SETUP & ANTI-CRASH LIMITS ---
+    page.title = "Jayace PicClean"
     page.padding = 30
     page.vertical_alignment = "center"
     page.theme_mode = "dark"
 
+    # Instructs Flet to load the app window icon
     try:
-        page.window.icon = "icon.ico" # <-- HIER: .ico statt .png!
+        page.window.icon = "icon.png"
         page.window.width = 1200
         page.window.height = 800
         page.window.min_width = 900
@@ -202,12 +204,13 @@ def main(page: ft.Page):
         "unscharf": [],
         "duplikate": [],
         "vorschau_pfad": None,
+        "vorschau_kategorie": None,
         "lang": "DE",
         "is_dark": True,
-        "is_working": False
+        "is_working": False # LOCK SYSTEM: Prevents race conditions from double-clicks
     }
 
-    # --- UI ELEMENTE DEKLARIEREN ---
+    # --- DECLARE UI ELEMENTS ---
     txt_badge = ft.Text("", size=10, weight="bold", text_align="center")
     txt_title = ft.Text("P I C C L E A N", size=32, weight="w900", italic=True, text_align="center")
     txt_desc = ft.Text("", size=14, text_align="center")
@@ -231,7 +234,7 @@ def main(page: ft.Page):
     list_unscharf = ft.ListView(expand=True, spacing=10)
     list_duplikate = ft.ListView(expand=True, spacing=10)
 
-    # --- THEME & SPRACHE UPDATER ---
+    # --- THEME & LANGUAGE UPDATERS ---
     def apply_theme():
         t = THEME["dark"] if state["is_dark"] else THEME["light"]
 
@@ -285,14 +288,16 @@ def main(page: ft.Page):
         btn_clean_dup.content.value = t["btn_dup"]
         btn_keep.content.value = t["btn_keep"]
 
+        # Highlight the currently active language
         for btn in lang_row.controls:
             if btn.content.value == l:
                 btn.content.color = PURPLE
             else:
                 btn.content.color = THEME["dark" if state["is_dark"] else "light"]["text_muted"]
 
+        # Live translation for dynamic list items
         for item in list_duplikate.controls:
-            dateiname = item.data
+            dateiname = item.data["dateiname"]
             item.content.value = f"{dateiname} {t['copy']}"
 
         page.update()
@@ -325,24 +330,33 @@ def main(page: ft.Page):
 
     top_bar = ft.Row([theme_btn, ft.Container(expand=True), lang_row], alignment="spaceBetween")
 
-    # --- VORSCHAU ---
-    def zeige_vorschau(pfad):
+    # --- PREVIEW ---
+    def zeige_vorschau(pfad, kategorie):
         state["vorschau_pfad"] = pfad
+        state["vorschau_kategorie"] = kategorie
+
         preview_container.content = ft.Image(src=pfad, fit="contain", border_radius=10, expand=True)
+
+        if not state["is_working"]:
+            btn_keep.visible = True
+
         page.update()
 
     def reset_vorschau():
         state["vorschau_pfad"] = None
+        state["vorschau_kategorie"] = None
         txt_prev_empty.value = TEXTS[state["lang"]]["prev_empty"]
         preview_container.content = txt_prev_empty
+        btn_keep.visible = False
         page.update()
 
-    # --- HAUPT LOGIK ---
+    # --- MAIN LOGIC ---
     def hole_ordner_pfad():
         ordner_pfad = [""]
         def _dialog():
             root = None
             try:
+                # Fallback to native OS dialog, avoids Flet bugs
                 root = tk.Tk()
                 root.withdraw()
                 root.attributes('-topmost', True)
@@ -388,6 +402,7 @@ def main(page: ft.Page):
             status_text.visible = True
             status_text.value = TEXTS[l]["search"]
 
+            # Lock UI immediately
             btn_clean_blur.visible = False
             btn_clean_dup.visible = False
             btn_keep.visible = False
@@ -395,7 +410,7 @@ def main(page: ft.Page):
             btn_scan.disabled = True
             btn_scan.opacity = 0.5
             page.update()
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(0.01) # Give the async event loop time to breathe
 
             unterstuetzte_formate = ('.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff')
 
@@ -422,6 +437,7 @@ def main(page: ft.Page):
 
                 try:
                     with Image.open(pfad) as img_pil:
+                        # LOW-END PC HACK: Resize image drastically before hashing to save RAM and CPU
                         img_pil.thumbnail((256, 256))
                         v_hash = imagehash.phash(img_pil)
 
@@ -432,7 +448,7 @@ def main(page: ft.Page):
 
                     if ist_duplikat:
                         state["duplikate"].append(pfad)
-                        item = erstelle_listen_eintrag(pfad, dateiname, is_dup=True)
+                        item = erstelle_listen_eintrag(pfad, dateiname, kategorie="duplikate", is_dup=True)
                         list_duplikate.controls.append(item)
                     else:
                         hashes[v_hash] = pfad
@@ -448,17 +464,19 @@ def main(page: ft.Page):
                                 varianz = cv2.Laplacian(img_cv, cv2.CV_64F).var()
                                 if varianz < UNSCHAERFE_SCHWELLENWERT:
                                     state["unscharf"].append(pfad)
-                                    item = erstelle_listen_eintrag(pfad, dateiname, is_dup=False)
+                                    item = erstelle_listen_eintrag(pfad, dateiname, kategorie="unscharf", is_dup=False)
                                     list_unscharf.controls.append(item)
-                                del img_cv
-                        del img_array
+                                del img_cv # Free RAM
+                        del img_array # Free RAM
                     except Exception:
                         pass
 
+                # Prevent Memory Leaks on massive folders (10,000+ images)
                 if i % 100 == 0:
                     gc.collect()
 
                 progress_bar.value = (i + 1) / total
+                # Update UI every 10 images to keep it smooth on low-end PCs
                 if i % 10 == 0 or i == total - 1:
                     page.update()
                     await asyncio.sleep(0.001)
@@ -472,7 +490,7 @@ def main(page: ft.Page):
             await reset_ui_nach_scan()
             state["is_working"] = False
 
-    def erstelle_listen_eintrag(pfad, dateiname, is_dup=False):
+    def erstelle_listen_eintrag(pfad, dateiname, kategorie, is_dup=False):
         t = THEME["dark"] if state["is_dark"] else THEME["light"]
         l = state["lang"]
 
@@ -485,9 +503,9 @@ def main(page: ft.Page):
             bgcolor=t["card_inner"],
             border_radius=8,
             alignment=ft.Alignment(0, 0),
-            on_click=lambda e, p=pfad: zeige_vorschau(p),
+            on_click=lambda e, p=pfad, k=kategorie: zeige_vorschau(p, k),
             ink=True,
-            data=dateiname
+            data={"pfad": pfad, "dateiname": dateiname} # Stores path & name as a dictionary
         )
         return container
 
@@ -502,7 +520,6 @@ def main(page: ft.Page):
 
         btn_clean_blur.visible = has_blur
         btn_clean_dup.visible = has_dup
-        btn_keep.visible = has_blur or has_dup
 
         btn_clean_blur.disabled = False
         btn_clean_blur.opacity = 1.0
@@ -516,21 +533,38 @@ def main(page: ft.Page):
         page.snack_bar.open = True
         page.update()
 
-    async def aktion_behalten(e):
+    # Action to KEEP a SINGLE image
+    async def aktion_einzelnes_bild_behalten():
         if state["is_working"]: return
-        l = state["lang"]
-        state["unscharf"].clear()
-        state["duplikate"].clear()
-        list_unscharf.controls.clear()
-        list_duplikate.controls.clear()
+
+        pfad = state["vorschau_pfad"]
+        kategorie = state["vorschau_kategorie"]
+
+        if not pfad or not kategorie: return
+
+        # 1. Remove image from internal list
+        if pfad in state[kategorie]:
+            try:
+                state[kategorie].remove(pfad)
+            except ValueError:
+                pass
+
+        # 2. Remove image from the UI list
+        ziel_liste = list_unscharf if kategorie == "unscharf" else list_duplikate
+
+        # Iterate over a copy of the list to allow live deletion
+        for item in ziel_liste.controls[:]:
+            if item.data["pfad"] == pfad:
+                ziel_liste.controls.remove(item)
+                break
+
+        # 3. Clear preview & hide button
         reset_vorschau()
 
-        btn_clean_blur.visible = False
-        btn_clean_dup.visible = False
-        btn_keep.visible = False
+        # 4. Check if we need to hide the main 'Move' buttons
+        btn_clean_blur.visible = len(state["unscharf"]) > 0
+        btn_clean_dup.visible = len(state["duplikate"]) > 0
 
-        page.snack_bar = ft.SnackBar(ft.Text(TEXTS[l]["done"], text_align="center"), bgcolor=PURPLE)
-        page.snack_bar.open = True
         page.update()
 
     async def raeume_auf(kategorie, button, list_view):
@@ -543,6 +577,7 @@ def main(page: ft.Page):
         try:
             reset_vorschau()
 
+            # IMMEDIATE UI Feedback
             button.content.value = TEXTS[l]["working"]
             button.disabled = True
             button.opacity = 0.5
@@ -564,14 +599,15 @@ def main(page: ft.Page):
                     erfolgreich += 1
                 except Exception:
                     pass
+
+                # Give the PC a moment to breathe every 5 images
                 if erfolgreich % 5 == 0: await asyncio.sleep(0.001)
 
             state[kategorie].clear()
             list_view.controls.clear()
 
+            # Hide button completely after successful move
             button.visible = False
-            if len(state["unscharf"]) == 0 and len(state["duplikate"]) == 0:
-                btn_keep.visible = False
 
             msg = TEXTS[l]["moved"].format(n=erfolgreich)
             page.snack_bar = ft.SnackBar(ft.Text(msg, text_align="center"), bgcolor=PURPLE)
@@ -591,11 +627,12 @@ def main(page: ft.Page):
         ink=True, on_click=starte_ordner_auswahl
     )
 
+    # The Keep button: Appears below the preview, only when an image is selected
     btn_keep = ft.Container(
         content=ft.Text("", weight="bold", text_align="center"),
         border_radius=30, padding=20, alignment=ft.Alignment(0, 0),
         ink=True, visible=False,
-        on_click=lambda e: page.run_task(aktion_behalten)
+        on_click=lambda _: page.run_task(aktion_einzelnes_bild_behalten)
     )
 
     btn_clean_blur = ft.Container(
@@ -612,7 +649,7 @@ def main(page: ft.Page):
         on_click=lambda _: page.run_task(raeume_auf, "duplikate", btn_clean_dup, list_duplikate)
     )
 
-    # --- LAYOUT ZUSAMMENBAUEN ---
+    # --- BUILD LAYOUT ---
     header = ft.Column(
         controls=[badge_container, txt_title, txt_desc],
         horizontal_alignment="center", spacing=5
@@ -620,7 +657,9 @@ def main(page: ft.Page):
 
     card_blur.content = ft.Column([txt_col_blur, list_unscharf], horizontal_alignment="center")
     card_dup.content = ft.Column([txt_col_dup, list_duplikate], horizontal_alignment="center")
-    card_prev.content = ft.Column([txt_col_prev, preview_container], horizontal_alignment="center")
+
+    # Keep button sits logically and elegantly right below the image preview
+    card_prev.content = ft.Column([txt_col_prev, preview_container, btn_keep], horizontal_alignment="center")
 
     main_content = ft.Row(
         expand=True,
@@ -628,7 +667,7 @@ def main(page: ft.Page):
     )
 
     footer = ft.Row(
-        controls=[btn_scan, ft.Container(expand=True), btn_keep, btn_clean_blur, btn_clean_dup],
+        controls=[btn_scan, ft.Container(expand=True), btn_clean_blur, btn_clean_dup],
         alignment="spaceBetween"
     )
 
@@ -640,9 +679,10 @@ def main(page: ft.Page):
         footer
     )
 
+    # Initial Setup (Applies start colors & language)
     apply_theme()
     apply_language()
 
 if __name__ == "__main__":
-    # DAS IST DER NEUE BEFEHL FÜR DIE ALLERNEUSTE FLET VERSION:
+    # LATEST FLET VERSION COMMAND:
     ft.run(main, assets_dir="assets")
